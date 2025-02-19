@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { Shield, Key, Lock, ArrowRight, Loader2 } from "lucide-react";
+import { Shield, Key, Lock, ArrowRight, Loader2, Mail } from "lucide-react";
 
 const Index = () => {
   const { toast } = useToast();
@@ -162,6 +161,22 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      <footer className="bg-gray-900 text-gray-300 py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <div className="flex items-center space-x-2">
+              <Mail className="h-4 w-4" />
+              <a href="mailto:info@mydoorkeeper.com" className="hover:text-primary transition-colors">
+                info@mydoorkeeper.com
+              </a>
+            </div>
+            <div className="text-sm text-gray-400">
+              © {new Date().getFullYear()} MyDoorKeeper. All rights reserved.
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
