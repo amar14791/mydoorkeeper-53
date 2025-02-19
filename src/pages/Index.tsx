@@ -20,7 +20,6 @@ const Index = () => {
     setIsLoading(true);
     
     try {
-      // Replace this URL with your Zapier webhook URL
       const response = await fetch("YOUR_ZAPIER_WEBHOOK_URL", {
         method: "POST",
         headers: {
@@ -49,9 +48,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-white to-secondary/5">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"30\" height=\"30\" viewBox=\"0 0 30 30\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z\" fill=\"rgba(249,115,22,0.07)\"%3E%3C/path%3E%3C/svg%3E')] opacity-50"></div>
+        <div className="absolute inset-0" style={{
+          backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(249,115,22,0.07)'/%3E%3C/svg%3E\")",
+          opacity: 0.5
+        }}></div>
         <div className="container mx-auto px-4 text-center relative animate-fade-up">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             MyDoorKeeper
@@ -70,7 +71,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Features Section */}
       <section id="features" className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 text-gray-900">
@@ -81,21 +81,18 @@ const Index = () => {
               {
                 icon: <Shield className="h-8 w-8 text-primary" />,
                 title: "Advanced Security",
-                description:
-                  "State-of-the-art protection systems for your peace of mind.",
+                description: "State-of-the-art protection systems for your peace of mind."
               },
               {
                 icon: <Key className="h-8 w-8 text-primary" />,
                 title: "Smart Access",
-                description:
-                  "Control access to your property from anywhere, anytime.",
+                description: "Control access to your property from anywhere, anytime."
               },
               {
                 icon: <Lock className="h-8 w-8 text-primary" />,
                 title: "24/7 Monitoring",
-                description:
-                  "Round-the-clock surveillance and instant alerts.",
-              },
+                description: "Round-the-clock surveillance and instant alerts."
+              }
             ].map((feature, index) => (
               <div
                 key={index}
@@ -115,7 +112,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Contact Form Section */}
       <section id="contact" className="py-24 bg-gradient-to-t from-gray-50 to-white">
         <div className="container mx-auto px-4 max-w-md">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-900">
@@ -127,9 +123,7 @@ const Index = () => {
                 <Input
                   placeholder="Your Name"
                   value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
                   className="w-full"
                 />
@@ -139,9 +133,7 @@ const Index = () => {
                   type="email"
                   placeholder="Your Email"
                   value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
                   className="w-full"
                 />
@@ -150,9 +142,7 @@ const Index = () => {
                 <Textarea
                   placeholder="Your Message"
                   value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   required
                   className="w-full min-h-[150px]"
                 />
