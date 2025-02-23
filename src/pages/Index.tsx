@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -75,7 +74,7 @@ const Index = () => {
       </header>
 
       <div className="pt-[3rem] md:pt-16">
-        <section className="relative min-h-screen flex items-start md:items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-white to-secondary/5">
+        <section className="relative min-h-0 md:min-h-screen flex items-start md:items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-white to-secondary/5">
           <div className="absolute inset-0" style={{
             backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(249,115,22,0.07)'/%3E%3C/svg%3E\")",
             opacity: 0.5
@@ -102,7 +101,7 @@ const Index = () => {
           </div>
         </section>
 
-        <section id="features" className="py-24 bg-white">
+        <section id="features" className="py-12 md:py-24 bg-white">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 text-primary">
               Why you should choose My Door Keeper?
