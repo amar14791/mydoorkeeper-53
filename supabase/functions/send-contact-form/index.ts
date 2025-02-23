@@ -20,12 +20,14 @@ interface ContactFormData {
 }
 
 const handler = async (req: Request): Promise<Response> => {
+  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const formData: ContactFormData = await req.json();
+    console.log("Received form data:", formData);
 
     const emailResponse = await resend.emails.send({
       from: "MyDoorKeeper <onboarding@resend.dev>",
