@@ -65,7 +65,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center">
             <img 
-              src="/lovable-uploads/ca1d23d6-0a04-4918-814f-1de3f631f80a.png" 
+              src="/lovable-uploads/538e7a91-aee2-4bde-841a-77872de23b28.png" 
               alt="MyDoorKeeper Logo" 
               className="h-12 w-auto"
             />
@@ -81,7 +81,7 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center relative animate-fade-up">
           <div className="mb-8 flex justify-center">
             <img 
-              src="/lovable-uploads/ca1d23d6-0a04-4918-814f-1de3f631f80a.png" 
+              src="/lovable-uploads/538e7a91-aee2-4bde-841a-77872de23b28.png" 
               alt="MyDoorKeeper Logo" 
               className="h-40 w-auto"
             />
