@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,7 +73,7 @@ const Index = () => {
       <section id="features" className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 text-gray-900">
-            Why Choose <span className="text-primary">MyDoorKeeper</span>
+            Why you should choose <span className="text-primary">My Door Keeper</span>?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
