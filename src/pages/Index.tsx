@@ -223,16 +223,16 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="bg-gray-900 text-gray-300 py-8">
+      <footer className="bg-primary text-white py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-center space-y-4">
             <div className="flex items-center space-x-2">
               <Mail className="h-4 w-4" />
-              <a href="mailto:info@mydoorkeeper.com" className="hover:text-primary transition-colors">
+              <a href="mailto:info@mydoorkeeper.com" className="hover:text-white/90 transition-colors">
                 info@mydoorkeeper.com
               </a>
             </div>
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-white/80">
               © {new Date().getFullYear()} MyDoorKeeper. All rights reserved.
             </div>
           </div>
