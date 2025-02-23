@@ -85,7 +85,7 @@ const Index = () => {
               <img 
                 src="/lovable-uploads/cbf485a7-35d8-4e37-8630-e9c333b06cd1.png" 
                 alt="Person relaxing at home" 
-                className="w-full max-w-[600px] h-auto object-contain"
+                className="w-full md:w-[800px] h-auto object-contain"
               />
             </div>
             <p className="text-xl md:text-2xl mb-8 text-gray-600 max-w-2xl mx-auto">
