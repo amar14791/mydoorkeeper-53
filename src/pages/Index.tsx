@@ -83,9 +83,9 @@ const Index = () => {
           <div className="container mx-auto px-4 text-center relative animate-fade-up">
             <div className="mb-8 flex justify-center">
               <img 
-                src="/lovable-uploads/538e7a91-aee2-4bde-841a-77872de23b28.png" 
-                alt="MyDoorKeeper Logo" 
-                className="h-32 md:h-40 w-auto object-contain max-w-[280px] md:max-w-none"
+                src="/lovable-uploads/cbf485a7-35d8-4e37-8630-e9c333b06cd1.png" 
+                alt="Person relaxing at home" 
+                className="w-full max-w-[600px] h-auto object-contain"
               />
             </div>
             <p className="text-xl md:text-2xl mb-8 text-gray-600 max-w-2xl mx-auto">
