@@ -67,7 +67,7 @@ const Index = () => {
             <img 
               src="/lovable-uploads/538e7a91-aee2-4bde-841a-77872de23b28.png" 
               alt="MyDoorKeeper Logo" 
-              className="h-12 w-auto"
+              className="h-12 w-auto object-contain max-w-[200px]"
             />
           </div>
         </div>
@@ -83,7 +83,7 @@ const Index = () => {
             <img 
               src="/lovable-uploads/538e7a91-aee2-4bde-841a-77872de23b28.png" 
               alt="MyDoorKeeper Logo" 
-              className="h-40 w-auto"
+              className="h-32 md:h-40 w-auto object-contain max-w-[280px] md:max-w-none"
             />
           </div>
           <p className="text-xl md:text-2xl mb-8 text-gray-600 max-w-2xl mx-auto">
