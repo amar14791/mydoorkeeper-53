@@ -20,14 +20,30 @@ interface ContactFormData {
 }
 
 const handler = async (req: Request): Promise<Response> => {
+  console.log("Request received:", req.method);
+
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const formData: ContactFormData = await req.json();
-    console.log("Received form data:", formData);
+    // Log the raw request body
+    const rawBody = await req.text();
+    console.log("Raw request body:", rawBody);
+
+    // Parse the JSON body
+    const formData: ContactFormData = JSON.parse(rawBody);
+    console.log("Parsed form data:", formData);
+
+    // Validate required fields
+    if (!formData.name || !formData.email || !formData.message) {
+      throw new Error("Missing required fields");
+    }
+
+    // Log Resend API key presence (don't log the actual key!)
+    const hasResendKey = !!Deno.env.get("RESEND_API_KEY");
+    console.log("Resend API key present:", hasResendKey);
 
     const emailResponse = await resend.emails.send({
       from: "MyDoorKeeper <onboarding@resend.dev>",
@@ -59,11 +75,19 @@ const handler = async (req: Request): Promise<Response> => {
     });
   } catch (error: any) {
     console.error("Error in send-contact-form function:", error);
+    console.error("Error stack:", error.stack);
+    
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        details: error.stack
+      }),
       {
         status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
+        headers: { 
+          "Content-Type": "application/json",
+          ...corsHeaders
+        },
       }
     );
   }

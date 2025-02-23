@@ -23,22 +23,16 @@ const Index = () => {
     setIsLoading(true);
     
     try {
-      // Send data to Zapier webhook
-      await fetch("YOUR_ZAPIER_WEBHOOK_URL", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-        mode: "no-cors",
-      });
-
-      // Send email notification using Supabase Edge Function
-      const { error } = await supabase.functions.invoke('send-contact-form', {
+      const { data, error } = await supabase.functions.invoke('send-contact-form', {
         body: formData
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase function error:", error);
+        throw error;
+      }
+
+      console.log("Form submission response:", data);
 
       toast({
         title: "Success!",
