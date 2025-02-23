@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,7 +62,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      <header className="bg-primary py-4 fixed top-0 left-0 right-0 z-50 shadow-md">
+      <header className="bg-white py-4 fixed top-0 left-0 right-0 z-50 shadow-md">
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center">
             <img 
