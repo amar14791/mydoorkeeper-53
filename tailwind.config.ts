@@ -20,6 +20,7 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        'viking-teal': '#55C7C7', // Adding Viking Teal color
         primary: {
           DEFAULT: "#F97316",
           foreground: "#FFFFFF",
