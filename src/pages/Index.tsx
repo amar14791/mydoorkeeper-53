@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Shield, Key, Lock, ArrowRight, Loader2, Mail, UserPlus, Bell, Users, Fingerprint, Phone, CreditCard } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const { toast } = useToast();
@@ -33,15 +33,12 @@ const Index = () => {
         mode: "no-cors",
       });
 
-      // Send email notification
-      await fetch("https://YOUR_SUPABASE_PROJECT.supabase.co/functions/v1/send-contact-form", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${process.env.SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify(formData),
+      // Send email notification using Supabase Edge Function
+      const { error } = await supabase.functions.invoke('send-contact-form', {
+        body: formData
       });
+
+      if (error) throw error;
 
       toast({
         title: "Success!",
@@ -57,6 +54,7 @@ const Index = () => {
         message: "" 
       });
     } catch (error) {
+      console.error("Form submission error:", error);
       toast({
         title: "Error",
         description: "Failed to send message. Please try again.",
