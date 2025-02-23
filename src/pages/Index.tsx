@@ -11,6 +11,9 @@ const Index = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    societyName: "",
+    numberOfFlats: "",
+    query: "",
     message: "",
   });
 
@@ -33,7 +36,14 @@ const Index = () => {
         description: "Your message has been sent successfully.",
       });
       
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ 
+        name: "", 
+        email: "", 
+        societyName: "", 
+        numberOfFlats: "", 
+        query: "", 
+        message: "" 
+      });
     } catch (error) {
       toast({
         title: "Error",
@@ -148,6 +158,34 @@ const Index = () => {
                   placeholder="Your Email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <Input
+                  placeholder="Society Name"
+                  value={formData.societyName}
+                  onChange={(e) => setFormData({ ...formData, societyName: e.target.value })}
+                  required
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <Input
+                  type="number"
+                  placeholder="Number of Flats"
+                  value={formData.numberOfFlats}
+                  onChange={(e) => setFormData({ ...formData, numberOfFlats: e.target.value })}
+                  required
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <Input
+                  placeholder="Query Type"
+                  value={formData.query}
+                  onChange={(e) => setFormData({ ...formData, query: e.target.value })}
                   required
                   className="w-full"
                 />
