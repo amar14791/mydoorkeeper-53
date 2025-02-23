@@ -23,13 +23,24 @@ const Index = () => {
     setIsLoading(true);
     
     try {
-      const response = await fetch("YOUR_ZAPIER_WEBHOOK_URL", {
+      // Send data to Zapier webhook
+      await fetch("YOUR_ZAPIER_WEBHOOK_URL", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
         mode: "no-cors",
+      });
+
+      // Send email notification
+      await fetch("https://YOUR_SUPABASE_PROJECT.supabase.co/functions/v1/send-contact-form", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify(formData),
       });
 
       toast({
