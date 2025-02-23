@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -71,9 +70,6 @@ const Index = () => {
               className="h-40 w-auto"
             />
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            MyDoorKeeper
-          </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-600 max-w-2xl mx-auto">
             Secure your space with confidence and convenience
           </p>
