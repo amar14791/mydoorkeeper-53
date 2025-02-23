@@ -158,7 +158,7 @@ const Index = () => {
 
       <section id="contact" className="py-24 bg-gradient-to-t from-gray-50 to-white">
         <div className="container mx-auto px-4 max-w-md">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-900">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-primary">
             Get Started with MyDoorKeeper
           </h2>
           <div className="bg-white p-8 rounded-xl shadow-lg">
