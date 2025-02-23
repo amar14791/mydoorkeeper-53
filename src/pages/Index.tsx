@@ -210,7 +210,7 @@ const Index = () => {
               </div>
               <Button
                 type="submit"
-                className="w-full bg-primary hover:bg-primary/90"
+                className="w-full bg-viking-teal hover:bg-viking-teal/90"
                 size="lg"
                 disabled={isLoading}
               >
