@@ -1,9 +1,10 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { Shield, Key, Lock, ArrowRight, Loader2, Mail } from "lucide-react";
+import { Shield, Key, Lock, ArrowRight, Loader2, Mail, UserPlus, Bell, Users, Fingerprint, Phone, CreditCard } from "lucide-react";
 
 const Index = () => {
   const { toast } = useToast();
@@ -75,22 +76,37 @@ const Index = () => {
           <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 text-gray-900">
             Why Choose <span className="text-primary">MyDoorKeeper</span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                icon: <Shield className="h-8 w-8 text-primary" />,
-                title: "Advanced Security",
-                description: "State-of-the-art protection systems for your peace of mind."
+                icon: <UserPlus className="h-8 w-8 text-primary" />,
+                title: "Seamless Visitor Management",
+                description: "Streamline guest access with digital registration and automated notifications for a smooth, secure entry process."
               },
               {
-                icon: <Key className="h-8 w-8 text-primary" />,
-                title: "Smart Access",
-                description: "Control access to your property from anywhere, anytime."
+                icon: <Bell className="h-8 w-8 text-primary" />,
+                title: "Real-time Notifications",
+                description: "Stay informed with instant alerts about visitors, deliveries, and important community updates."
               },
               {
-                icon: <Lock className="h-8 w-8 text-primary" />,
-                title: "24/7 Monitoring",
-                description: "Round-the-clock surveillance and instant alerts."
+                icon: <Users className="h-8 w-8 text-primary" />,
+                title: "Keep Connected to Your Community",
+                description: "Foster stronger relationships through our integrated communication platform and community forums."
+              },
+              {
+                icon: <Fingerprint className="h-8 w-8 text-primary" />,
+                title: "Approvals at Fingertips",
+                description: "Quick and secure approval process for visitor access and community requests from your mobile device."
+              },
+              {
+                icon: <Phone className="h-8 w-8 text-primary" />,
+                title: "Emergency Assistance",
+                description: "Instant access to emergency services and community support when you need it most."
+              },
+              {
+                icon: <CreditCard className="h-8 w-8 text-primary" />,
+                title: "Dues and Bill Management",
+                description: "Effortlessly manage and track community payments, dues, and billing all in one place."
               }
             ].map((feature, index) => (
               <div
