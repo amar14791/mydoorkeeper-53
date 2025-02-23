@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -76,9 +77,9 @@ const Index = () => {
           <Button
             className="group text-lg bg-primary hover:bg-primary/90"
             size="lg"
-            onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}
+            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
           >
-            Discover Security Solutions
+            Book a Demo
             <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </Button>
         </div>
