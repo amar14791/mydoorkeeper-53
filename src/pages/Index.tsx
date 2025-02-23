@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,6 +64,13 @@ const Index = () => {
           opacity: 0.5
         }}></div>
         <div className="container mx-auto px-4 text-center relative animate-fade-up">
+          <div className="mb-8 flex justify-center">
+            <img 
+              src="/lovable-uploads/d3ba781f-3b06-4cac-9a06-9bb8231d9b67.png" 
+              alt="MyDoorKeeper Logo" 
+              className="h-24 w-auto"
+            />
+          </div>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             MyDoorKeeper
           </h1>
