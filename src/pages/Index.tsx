@@ -66,9 +66,9 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center relative animate-fade-up">
           <div className="mb-8 flex justify-center">
             <img 
-              src="/lovable-uploads/d3ba781f-3b06-4cac-9a06-9bb8231d9b67.png" 
+              src="/lovable-uploads/ca1d23d6-0a04-4918-814f-1de3f631f80a.png" 
               alt="MyDoorKeeper Logo" 
-              className="h-24 w-auto"
+              className="h-40 w-auto"
             />
           </div>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
