@@ -75,7 +75,7 @@ const Index = () => {
             <div className="flex justify-center">
               <img src="/lovable-uploads/cbf485a7-35d8-4e37-8630-e9c333b06cd1.png" alt="Person relaxing at home" className="w-full md:w-[800px] h-auto object-contain" />
             </div>
-            <p className="text-xl mb-8 max-w-2xl mx-auto text-center font-semibold md:text-4xl text-primary-DEFAULT">
+            <p className="text-xl mb-8 max-w-2xl mx-auto text-center font-semibold md:text-4xl text-primary-DEFAULT px-[16px] py-[16px]">
               Secure your space with confidence and convenience
             </p>
             <Button className="group text-lg bg-viking-teal hover:bg-viking-teal/90" size="lg" onClick={() => document.getElementById("contact")?.scrollIntoView({
