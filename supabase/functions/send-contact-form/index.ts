@@ -1,6 +1,6 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { Resend } from "https://esm.sh/resend@0.16.0";
+import { Resend } from "https://esm.sh/resend@1.0.0";
 
 // Type definitions
 interface ContactFormData {
@@ -11,9 +11,6 @@ interface ContactFormData {
   query?: string;
   message: string;
 }
-
-// Create a Resend instance
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
 // Handle HTTP requests
 serve(async (req) => {
@@ -32,12 +29,14 @@ serve(async (req) => {
   }
 
   try {
-    // Initialize Resend
+    // Get the RESEND_API_KEY from environment variables
+    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
     if (!RESEND_API_KEY) {
       console.error("RESEND_API_KEY is not set in environment variables.");
       throw new Error("Email service configuration error. Missing API key.");
     }
     
+    // Initialize Resend with the API key
     const resend = new Resend(RESEND_API_KEY);
     console.log("Resend initialized successfully");
 
@@ -59,7 +58,7 @@ serve(async (req) => {
     try {
       console.log("Attempting to send email...");
       const emailResponse = await resend.emails.send({
-        from: "noreply@mydoorkeeper.com", // Use a domain you own and verified in Resend
+        from: "noreply@mydoorkeeper.com", 
         to: ["knock@mydoorkeeper.com"],
         subject: `New Contact Form Submission from ${formData.name}`,
         html: `

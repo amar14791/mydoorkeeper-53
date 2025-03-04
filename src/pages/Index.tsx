@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,7 +42,7 @@ const Index = () => {
 
       if (error) {
         console.error("Supabase function error:", error);
-        throw error;
+        throw new Error(error.message || "Failed to send message");
       }
 
       console.log("Form submission response:", data);
@@ -59,11 +60,11 @@ const Index = () => {
         query: "", 
         message: "" 
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Form submission error:", error);
       toast({
         title: "Error",
-        description: "Failed to send message. Please try again.",
+        description: error.message || "Failed to send message. Please try again.",
         variant: "destructive",
       });
     } finally {
