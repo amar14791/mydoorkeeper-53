@@ -17,15 +17,15 @@ serve(async (req) => {
   console.log("Received request to send-contact-form function");
   
   // Set up CORS headers
-  const headers = new Headers({
+  const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
     "Content-Type": "application/json",
-  });
+  };
 
   // Handle preflight requests
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers, status: 204 });
+    return new Response(null, { headers: corsHeaders, status: 204 });
   }
 
   try {
@@ -38,7 +38,7 @@ serve(async (req) => {
           success: false, 
           error: "Email service configuration error. Missing API key." 
         }),
-        { headers, status: 500 }
+        { headers: corsHeaders, status: 500 }
       );
     }
     
@@ -55,7 +55,7 @@ serve(async (req) => {
       console.error("Error parsing request body:", parseError);
       return new Response(
         JSON.stringify({ success: false, error: "Invalid request format" }),
-        { headers, status: 400 }
+        { headers: corsHeaders, status: 400 }
       );
     }
 
@@ -66,7 +66,7 @@ serve(async (req) => {
           success: false, 
           error: "Missing required fields: name, email, and message are required" 
         }),
-        { headers, status: 400 }
+        { headers: corsHeaders, status: 400 }
       );
     }
 
@@ -108,7 +108,7 @@ serve(async (req) => {
       
       return new Response(
         JSON.stringify({ success: true, message: "Email sent successfully" }),
-        { headers, status: 200 }
+        { headers: corsHeaders, status: 200 }
       );
     } catch (emailError) {
       console.error("Error sending email:", emailError);
@@ -117,7 +117,7 @@ serve(async (req) => {
           success: false, 
           error: `Failed to send email: ${emailError.message || "Unknown error"}` 
         }),
-        { headers, status: 500 }
+        { headers: corsHeaders, status: 500 }
       );
     }
   } catch (error) {
@@ -127,7 +127,7 @@ serve(async (req) => {
         success: false, 
         error: error.message || "Unknown error occurred" 
       }),
-      { headers, status: 500 }
+      { headers: corsHeaders, status: 500 }
     );
   }
 });
