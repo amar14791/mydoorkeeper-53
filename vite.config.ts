@@ -5,6 +5,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
+  base: '/', // Explicitly set base path
   build: {
     outDir: 'dist',
     emptyOutDir: true,
