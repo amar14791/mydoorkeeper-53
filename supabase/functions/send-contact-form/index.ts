@@ -33,7 +33,13 @@ serve(async (req) => {
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
     if (!RESEND_API_KEY) {
       console.error("RESEND_API_KEY is not set in environment variables.");
-      throw new Error("Email service configuration error. Missing API key.");
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Email service configuration error. Missing API key." 
+        }),
+        { headers, status: 500 }
+      );
     }
     
     // Initialize Resend with the API key
@@ -47,18 +53,43 @@ serve(async (req) => {
       console.log("Parsed form data:", formData);
     } catch (parseError) {
       console.error("Error parsing request body:", parseError);
-      throw new Error("Invalid request format");
+      return new Response(
+        JSON.stringify({ success: false, error: "Invalid request format" }),
+        { headers, status: 400 }
+      );
     }
 
     // Validate required fields
     if (!formData.name || !formData.email || !formData.message) {
-      throw new Error("Missing required fields: name, email, and message are required");
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "Missing required fields: name, email, and message are required" 
+        }),
+        { headers, status: 400 }
+      );
     }
 
     try {
       console.log("Attempting to send email...");
+      
+      // Test the Resend configuration first
+      const testEmailResponse = await resend.emails.send({
+        from: "onboarding@resend.dev", // Use Resend's default domain for testing
+        to: ["knock@mydoorkeeper.com"],
+        subject: "Testing Resend Configuration",
+        html: "<p>This is a test email to verify Resend configuration.</p>",
+      });
+      
+      console.log("Test email response:", testEmailResponse);
+      
+      if (testEmailResponse.error) {
+        throw new Error(`Test email failed: ${testEmailResponse.error.message || "Unknown error"}`);
+      }
+      
+      // If test email works, send the actual email
       const emailResponse = await resend.emails.send({
-        from: "noreply@mydoorkeeper.com", 
+        from: "onboarding@resend.dev", // Use Resend's default domain until yours is verified
         to: ["knock@mydoorkeeper.com"],
         subject: `New Contact Form Submission from ${formData.name}`,
         html: `
@@ -74,22 +105,29 @@ serve(async (req) => {
       });
 
       console.log("Email sent successfully:", emailResponse);
+      
       return new Response(
         JSON.stringify({ success: true, message: "Email sent successfully" }),
         { headers, status: 200 }
       );
     } catch (emailError) {
       console.error("Error sending email:", emailError);
-      throw new Error(`Failed to send email: ${emailError.message}`);
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: `Failed to send email: ${emailError.message || "Unknown error"}` 
+        }),
+        { headers, status: 500 }
+      );
     }
   } catch (error) {
-    console.error("Function error:", error.message);
+    console.error("Function error:", error.message || "Unknown error");
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message || "Unknown error occurred"
+        error: error.message || "Unknown error occurred" 
       }),
-      { headers, status: 400 }
+      { headers, status: 500 }
     );
   }
 });

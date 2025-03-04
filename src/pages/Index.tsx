@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,9 +39,16 @@ const Index = () => {
         body: formData
       });
 
+      console.log("Edge function response:", data, error);
+
       if (error) {
         console.error("Supabase function error:", error);
         throw new Error(error.message || "Failed to send message");
+      }
+
+      if (!data || !data.success) {
+        console.error("Form submission unsuccessful:", data);
+        throw new Error(data?.error || "Failed to send message. Please try again.");
       }
 
       console.log("Form submission response:", data);
