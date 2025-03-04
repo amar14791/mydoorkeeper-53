@@ -3,7 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { Shield, Key, Lock, ArrowRight, Loader2, Mail, UserPlus, Bell, Users, Fingerprint, Phone, CreditCard } from "lucide-react";
+import { 
+  ArrowRight, 
+  Loader2, 
+  Mail, 
+  UserPlus, 
+  Bell, 
+  Users, 
+  Fingerprint, 
+  Phone, 
+  CreditCard 
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
@@ -23,6 +33,8 @@ const Index = () => {
     setIsLoading(true);
     
     try {
+      console.log("Submitting form data:", formData);
+      
       const { data, error } = await supabase.functions.invoke('send-contact-form', {
         body: formData
       });

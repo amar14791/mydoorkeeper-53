@@ -37,11 +37,14 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Resend initialized successfully");
 
     // Parse and validate form data
-    const rawBody = await req.text();
-    console.log("Raw request body:", rawBody);
-
-    const formData: ContactFormData = JSON.parse(rawBody);
-    console.log("Parsed form data:", formData);
+    let formData: ContactFormData;
+    try {
+      formData = await req.json();
+      console.log("Parsed form data:", formData);
+    } catch (parseError) {
+      console.error("Error parsing request body:", parseError);
+      throw new Error("Invalid request format");
+    }
 
     // Validate required fields
     if (!formData.name || !formData.email || !formData.message) {
@@ -51,7 +54,7 @@ const handler = async (req: Request): Promise<Response> => {
     try {
       console.log("Attempting to send email...");
       const emailResponse = await resend.emails.send({
-        from: "onboarding@resend.dev", // Using the verified sender domain
+        from: "noreply@mydoorkeeper.com", // Use a domain you own and verified in Resend
         to: ["knock@mydoorkeeper.com"],
         subject: `New Contact Form Submission from ${formData.name}`,
         html: `
