@@ -43,7 +43,7 @@ const Index = () => {
 
       if (error) {
         console.error("Supabase function error:", error);
-        throw new Error(error.message || "Failed to send message");
+        throw new Error(error.message || "Failed to send message. Please try again.");
       }
 
       if (!data || !data.success) {
@@ -51,7 +51,7 @@ const Index = () => {
         throw new Error(data?.error || "Failed to send message. Please try again.");
       }
 
-      console.log("Form submission response:", data);
+      console.log("Form submission successful:", data);
 
       toast({
         title: "Success!",

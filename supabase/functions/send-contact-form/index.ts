@@ -31,6 +31,8 @@ serve(async (req) => {
   try {
     // Get the RESEND_API_KEY from environment variables
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+    console.log("RESEND_API_KEY available:", !!RESEND_API_KEY);
+    
     if (!RESEND_API_KEY) {
       console.error("RESEND_API_KEY is not set in environment variables.");
       return new Response(
@@ -42,10 +44,6 @@ serve(async (req) => {
       );
     }
     
-    // Initialize Resend with the API key
-    const resend = new Resend(RESEND_API_KEY);
-    console.log("Resend initialized successfully");
-
     // Parse and validate form data
     let formData: ContactFormData;
     try {
@@ -61,6 +59,7 @@ serve(async (req) => {
 
     // Validate required fields
     if (!formData.name || !formData.email || !formData.message) {
+      console.error("Missing required fields in form data");
       return new Response(
         JSON.stringify({ 
           success: false, 
@@ -71,40 +70,37 @@ serve(async (req) => {
     }
 
     try {
+      console.log("Initializing Resend with API key");
+      // Initialize Resend with the API key
+      const resend = new Resend(RESEND_API_KEY);
+      
       console.log("Attempting to send email...");
       
-      // Test the Resend configuration first
-      const testEmailResponse = await resend.emails.send({
-        from: "onboarding@resend.dev", // Use Resend's default domain for testing
-        to: ["knock@mydoorkeeper.com"],
-        subject: "Testing Resend Configuration",
-        html: "<p>This is a test email to verify Resend configuration.</p>",
-      });
+      // Create email content
+      const emailHtml = `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${formData.name}</p>
+        <p><strong>Email:</strong> ${formData.email}</p>
+        ${formData.societyName ? `<p><strong>Society Name:</strong> ${formData.societyName}</p>` : ''}
+        ${formData.numberOfFlats ? `<p><strong>Number of Flats:</strong> ${formData.numberOfFlats}</p>` : ''}
+        ${formData.query ? `<p><strong>Query Type:</strong> ${formData.query}</p>` : ''}
+        <p><strong>Message:</strong></p>
+        <p>${formData.message.replace(/\n/g, '<br>')}</p>
+      `;
       
-      console.log("Test email response:", testEmailResponse);
-      
-      if (testEmailResponse.error) {
-        throw new Error(`Test email failed: ${testEmailResponse.error.message || "Unknown error"}`);
-      }
-      
-      // If test email works, send the actual email
+      // Send the email
       const emailResponse = await resend.emails.send({
-        from: "onboarding@resend.dev", // Use Resend's default domain until yours is verified
+        from: "onboarding@resend.dev",
         to: ["knock@mydoorkeeper.com"],
         subject: `New Contact Form Submission from ${formData.name}`,
-        html: `
-          <h2>New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${formData.name}</p>
-          <p><strong>Email:</strong> ${formData.email}</p>
-          ${formData.societyName ? `<p><strong>Society Name:</strong> ${formData.societyName}</p>` : ''}
-          ${formData.numberOfFlats ? `<p><strong>Number of Flats:</strong> ${formData.numberOfFlats}</p>` : ''}
-          ${formData.query ? `<p><strong>Query Type:</strong> ${formData.query}</p>` : ''}
-          <p><strong>Message:</strong></p>
-          <p>${formData.message.replace(/\n/g, '<br>')}</p>
-        `,
+        html: emailHtml,
       });
 
-      console.log("Email sent successfully:", emailResponse);
+      console.log("Email response:", emailResponse);
+      
+      if (emailResponse.error) {
+        throw new Error(`Email sending failed: ${emailResponse.error.message || JSON.stringify(emailResponse.error)}`);
+      }
       
       return new Response(
         JSON.stringify({ success: true, message: "Email sent successfully" }),
