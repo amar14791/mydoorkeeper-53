@@ -16,7 +16,7 @@ interface ContactFormData {
 serve(async (req) => {
   console.log("Received request to send-contact-form function");
   
-  // Set up CORS headers
+  // Set up CORS headers as a plain object, not with Headers constructor
   const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -43,7 +43,7 @@ serve(async (req) => {
         { headers: corsHeaders, status: 500 }
       );
     }
-    
+
     // Parse and validate form data
     let formData: ContactFormData;
     try {
@@ -71,10 +71,10 @@ serve(async (req) => {
 
     try {
       console.log("Initializing Resend with API key");
-      // Initialize Resend with the API key
+      // Initialize Resend with the API key - using a different approach
       const resend = new Resend(RESEND_API_KEY);
       
-      console.log("Attempting to send email...");
+      console.log("Preparing to send email...");
       
       // Create email content
       const emailHtml = `
@@ -88,32 +88,42 @@ serve(async (req) => {
         <p>${formData.message.replace(/\n/g, '<br>')}</p>
       `;
       
-      // Send the email
+      // Send the email with a simple payload
       const emailResponse = await resend.emails.send({
-        from: "onboarding@resend.dev",
+        from: "onboarding@resend.dev", // Always use this until your domain is verified
         to: ["knock@mydoorkeeper.com"],
         subject: `New Contact Form Submission from ${formData.name}`,
         html: emailHtml,
       });
 
-      console.log("Email response:", emailResponse);
+      console.log("Email sending attempt complete, response:", JSON.stringify(emailResponse));
       
+      // Check for errors in emailResponse
       if (emailResponse.error) {
-        throw new Error(`Email sending failed: ${emailResponse.error.message || JSON.stringify(emailResponse.error)}`);
+        throw new Error(`Email sending failed: ${JSON.stringify(emailResponse.error)}`);
       }
       
       return new Response(
-        JSON.stringify({ success: true, message: "Email sent successfully" }),
-        { headers: corsHeaders, status: 200 }
+        JSON.stringify({ 
+          success: true, 
+          message: "Email sent successfully" 
+        }),
+        { 
+          headers: corsHeaders, 
+          status: 200 
+        }
       );
     } catch (emailError) {
-      console.error("Error sending email:", emailError);
+      console.error("Error sending email:", emailError.message || "Unknown email error");
       return new Response(
         JSON.stringify({ 
           success: false, 
           error: `Failed to send email: ${emailError.message || "Unknown error"}` 
         }),
-        { headers: corsHeaders, status: 500 }
+        { 
+          headers: corsHeaders, 
+          status: 500 
+        }
       );
     }
   } catch (error) {
@@ -123,7 +133,10 @@ serve(async (req) => {
         success: false, 
         error: error.message || "Unknown error occurred" 
       }),
-      { headers: corsHeaders, status: 500 }
+      { 
+        headers: corsHeaders, 
+        status: 500 
+      }
     );
   }
 });
