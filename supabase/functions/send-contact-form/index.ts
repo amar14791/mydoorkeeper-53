@@ -92,11 +92,14 @@ serve(async (req) => {
         <p>${formData.message.replace(/\n/g, '<br>')}</p>
       `;
       
+      // IMPORTANT: Resend free tier requires sending TO the verified email
+      // Using the account owner's email as both from and to
       const emailPayload = {
-        from: "onboarding@resend.dev",
-        to: ["knock@mydoorkeeper.com"],
+        from: "onboarding@resend.dev", // This is a default Resend address that's allowed during testing
+        to: ["abdeali.vhora@gmail.com"], // Change to the account owner's email
         subject: `New Contact Form Submission from ${formData.name}`,
         html: emailHtml,
+        reply_to: formData.email, // Add the user's email as reply-to
       };
       
       console.log("Sending request to Resend API with payload:", JSON.stringify(emailPayload));
