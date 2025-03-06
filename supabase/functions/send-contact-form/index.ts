@@ -1,6 +1,8 @@
 
+// Import the serve function from Deno's standard HTTP library
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { Resend } from "https://esm.sh/resend@1.0.0";
+// Import Resend using a specific ESM.sh URL that includes Deno compatibility
+import { Resend } from "https://esm.sh/@resend/node@0.5.2";
 
 // Type definitions
 interface ContactFormData {
@@ -16,7 +18,7 @@ interface ContactFormData {
 serve(async (req) => {
   console.log("Received request to send-contact-form function");
   
-  // Set up CORS headers as a plain object, not with Headers constructor
+  // Set up CORS headers as a plain object
   const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -71,7 +73,7 @@ serve(async (req) => {
 
     try {
       console.log("Initializing Resend with API key");
-      // Initialize Resend with the API key
+      // Initialize the Resend client
       const resend = new Resend(RESEND_API_KEY);
       
       console.log("Preparing to send email...");
@@ -88,19 +90,23 @@ serve(async (req) => {
         <p>${formData.message.replace(/\n/g, '<br>')}</p>
       `;
       
-      // Send the email with a minimal configuration to avoid Deno compatibility issues
-      const sendResult = await resend.emails.send({
-        from: "onboarding@resend.dev", // Always use this until your domain is verified
+      // Simplified email sending configuration
+      const emailData = {
+        from: "onboarding@resend.dev",
         to: ["knock@mydoorkeeper.com"],
         subject: `New Contact Form Submission from ${formData.name}`,
         html: emailHtml,
-      });
-
-      console.log("Email sending result:", JSON.stringify(sendResult));
+      };
       
-      // Check for errors in the result
-      if (sendResult.error) {
-        throw new Error(`Email sending failed: ${JSON.stringify(sendResult.error)}`);
+      console.log("Sending email with data:", JSON.stringify(emailData));
+      
+      // Send the email using a more Deno-compatible approach
+      const { data, error } = await resend.emails.send(emailData);
+      
+      console.log("Email sending completed - data:", data, "error:", error);
+      
+      if (error) {
+        throw new Error(`Resend API error: ${JSON.stringify(error)}`);
       }
       
       return new Response(
