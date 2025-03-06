@@ -71,7 +71,7 @@ serve(async (req) => {
 
     try {
       console.log("Initializing Resend with API key");
-      // Initialize Resend with the API key - using a different approach
+      // Initialize Resend with the API key
       const resend = new Resend(RESEND_API_KEY);
       
       console.log("Preparing to send email...");
@@ -88,19 +88,19 @@ serve(async (req) => {
         <p>${formData.message.replace(/\n/g, '<br>')}</p>
       `;
       
-      // Send the email with a simple payload
-      const emailResponse = await resend.emails.send({
+      // Send the email with a minimal configuration to avoid Deno compatibility issues
+      const sendResult = await resend.emails.send({
         from: "onboarding@resend.dev", // Always use this until your domain is verified
         to: ["knock@mydoorkeeper.com"],
         subject: `New Contact Form Submission from ${formData.name}`,
         html: emailHtml,
       });
 
-      console.log("Email sending attempt complete, response:", JSON.stringify(emailResponse));
+      console.log("Email sending result:", JSON.stringify(sendResult));
       
-      // Check for errors in emailResponse
-      if (emailResponse.error) {
-        throw new Error(`Email sending failed: ${JSON.stringify(emailResponse.error)}`);
+      // Check for errors in the result
+      if (sendResult.error) {
+        throw new Error(`Email sending failed: ${JSON.stringify(sendResult.error)}`);
       }
       
       return new Response(
@@ -114,7 +114,7 @@ serve(async (req) => {
         }
       );
     } catch (emailError) {
-      console.error("Error sending email:", emailError.message || "Unknown email error");
+      console.error("Error sending email:", emailError);
       return new Response(
         JSON.stringify({ 
           success: false, 
@@ -127,7 +127,7 @@ serve(async (req) => {
       );
     }
   } catch (error) {
-    console.error("Function error:", error.message || "Unknown error");
+    console.error("Function error:", error);
     return new Response(
       JSON.stringify({ 
         success: false, 
