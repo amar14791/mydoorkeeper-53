@@ -92,11 +92,10 @@ serve(async (req) => {
         <p>${formData.message.replace(/\n/g, '<br>')}</p>
       `;
       
-      // IMPORTANT: Resend free tier requires sending TO the verified email
-      // Using the account owner's email as both from and to
+      // Now using the verified domain for the from address
       const emailPayload = {
-        from: "onboarding@resend.dev", // This is a default Resend address that's allowed during testing
-        to: ["abdeali.vhora@gmail.com"], // Change to the account owner's email
+        from: "contact@mydoorkeeper.com", // Change to your verified domain email
+        to: ["knock@mydoorkeeper.com"], // Change to the desired recipient email
         subject: `New Contact Form Submission from ${formData.name}`,
         html: emailHtml,
         reply_to: formData.email, // Add the user's email as reply-to
