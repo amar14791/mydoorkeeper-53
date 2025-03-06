@@ -1,8 +1,6 @@
 
 // Import the serve function from Deno's standard HTTP library
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-// Import Resend for Deno
-import { Resend } from "https://esm.sh/resend@1.0.0";
 
 // Type definitions
 interface ContactFormData {
@@ -12,6 +10,14 @@ interface ContactFormData {
   numberOfFlats?: string;
   query?: string;
   message: string;
+}
+
+interface ResendEmailResponse {
+  id?: string;
+  error?: {
+    message: string;
+    statusCode: number;
+  };
 }
 
 // Handle HTTP requests
@@ -72,11 +78,7 @@ serve(async (req) => {
     }
 
     try {
-      console.log("Initializing Resend with API key");
-      // Initialize the Resend client with workaround for Deno
-      const resend = new Resend(RESEND_API_KEY);
-      
-      console.log("Preparing to send email...");
+      console.log("Preparing to send email without using Resend SDK");
       
       // Create email content
       const emailHtml = `
@@ -90,24 +92,26 @@ serve(async (req) => {
         <p>${formData.message.replace(/\n/g, '<br>')}</p>
       `;
       
-      // Create a simple email payload to avoid compatibility issues
-      const emailData = {
-        from: "onboarding@resend.dev",
-        to: ["knock@mydoorkeeper.com"],
-        subject: `New Contact Form Submission from ${formData.name}`,
-        html: emailHtml,
-      };
+      // Use direct fetch to Resend API instead of the SDK
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${RESEND_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          from: "onboarding@resend.dev",
+          to: ["knock@mydoorkeeper.com"],
+          subject: `New Contact Form Submission from ${formData.name}`,
+          html: emailHtml,
+        })
+      });
       
-      console.log("Sending email with data:", JSON.stringify(emailData));
+      const responseData = await response.json() as ResendEmailResponse;
+      console.log("Email sending response:", responseData);
       
-      // Send the email with direct method access, avoiding Headers constructor
-      const result = await resend.emails.send(emailData);
-      
-      console.log("Email sending completed - result:", result);
-      
-      // Check if there was an error from Resend
-      if ('error' in result && result.error) {
-        throw new Error(`Resend API error: ${JSON.stringify(result.error)}`);
+      if (!response.ok || responseData.error) {
+        throw new Error(`Resend API error: ${JSON.stringify(responseData.error || "Unknown error")}`);
       }
       
       return new Response(
