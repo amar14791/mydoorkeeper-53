@@ -78,7 +78,7 @@ serve(async (req) => {
     }
 
     try {
-      console.log("Preparing to send email without using Resend SDK");
+      console.log("Preparing email payload for Resend API");
       
       // Create email content
       const emailHtml = `
@@ -92,32 +92,59 @@ serve(async (req) => {
         <p>${formData.message.replace(/\n/g, '<br>')}</p>
       `;
       
-      // Use direct fetch to Resend API instead of the SDK
+      const emailPayload = {
+        from: "onboarding@resend.dev",
+        to: ["knock@mydoorkeeper.com"],
+        subject: `New Contact Form Submission from ${formData.name}`,
+        html: emailHtml,
+      };
+      
+      console.log("Sending request to Resend API with payload:", JSON.stringify(emailPayload));
+      
+      // Use fetch API to call Resend
       const response = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${RESEND_API_KEY}`,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          from: "onboarding@resend.dev",
-          to: ["knock@mydoorkeeper.com"],
-          subject: `New Contact Form Submission from ${formData.name}`,
-          html: emailHtml,
-        })
+        body: JSON.stringify(emailPayload)
       });
       
-      const responseData = await response.json() as ResendEmailResponse;
-      console.log("Email sending response:", responseData);
+      // Log the HTTP status and headers for debugging
+      console.log("Resend API response status:", response.status);
+      console.log("Resend API response headers:", Object.fromEntries(response.headers.entries()));
       
-      if (!response.ok || responseData.error) {
-        throw new Error(`Resend API error: ${JSON.stringify(responseData.error || "Unknown error")}`);
+      // Get the response text first for logging
+      const responseText = await response.text();
+      console.log("Resend API raw response:", responseText);
+      
+      // Parse the JSON response if possible
+      let responseData: ResendEmailResponse | null = null;
+      try {
+        responseData = JSON.parse(responseText);
+        console.log("Parsed response data:", responseData);
+      } catch (parseError) {
+        console.error("Error parsing Resend API response:", parseError);
       }
+      
+      // Check for HTTP error status
+      if (!response.ok) {
+        throw new Error(`Resend API HTTP error: ${response.status} - ${responseText || "No response data"}`);
+      }
+      
+      // Check for API error in the response
+      if (responseData && responseData.error) {
+        throw new Error(`Resend API error: ${JSON.stringify(responseData.error)}`);
+      }
+      
+      console.log("Email sent successfully with ID:", responseData?.id || "unknown");
       
       return new Response(
         JSON.stringify({ 
           success: true, 
-          message: "Email sent successfully" 
+          message: "Email sent successfully",
+          id: responseData?.id
         }),
         { 
           headers: corsHeaders, 
