@@ -1,8 +1,8 @@
 
 // Import the serve function from Deno's standard HTTP library
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-// Import Resend using a specific ESM.sh URL that includes Deno compatibility
-import { Resend } from "https://esm.sh/@resend/node@0.5.2";
+// Import Resend for Deno
+import { Resend } from "https://esm.sh/resend@1.0.0";
 
 // Type definitions
 interface ContactFormData {
@@ -73,7 +73,7 @@ serve(async (req) => {
 
     try {
       console.log("Initializing Resend with API key");
-      // Initialize the Resend client
+      // Initialize the Resend client with workaround for Deno
       const resend = new Resend(RESEND_API_KEY);
       
       console.log("Preparing to send email...");
@@ -90,7 +90,7 @@ serve(async (req) => {
         <p>${formData.message.replace(/\n/g, '<br>')}</p>
       `;
       
-      // Simplified email sending configuration
+      // Create a simple email payload to avoid compatibility issues
       const emailData = {
         from: "onboarding@resend.dev",
         to: ["knock@mydoorkeeper.com"],
@@ -100,13 +100,14 @@ serve(async (req) => {
       
       console.log("Sending email with data:", JSON.stringify(emailData));
       
-      // Send the email using a more Deno-compatible approach
-      const { data, error } = await resend.emails.send(emailData);
+      // Send the email with direct method access, avoiding Headers constructor
+      const result = await resend.emails.send(emailData);
       
-      console.log("Email sending completed - data:", data, "error:", error);
+      console.log("Email sending completed - result:", result);
       
-      if (error) {
-        throw new Error(`Resend API error: ${JSON.stringify(error)}`);
+      // Check if there was an error from Resend
+      if ('error' in result && result.error) {
+        throw new Error(`Resend API error: ${JSON.stringify(result.error)}`);
       }
       
       return new Response(
